@@ -1,0 +1,474 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: demo
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/azure_openai:0.0.15@980d85f44332d574a2a3a55dd421d3d25223aa8db5ba3ad78003c3f056f7af43
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: acane0320/memobase:0.0.2@b609d1b1e4e454835a291209bed62bc405240c9072d2af3d613480e14444fcd1
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: tool
+      id: 1746803580469-source-1746804325537-target
+      source: '1746803580469'
+      sourceHandle: source
+      target: '1746804325537'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: llm
+      id: 1746804325537-source-llm-target
+      source: '1746804325537'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: answer
+      id: llm-source-answer-target
+      source: llm
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: answer
+        targetType: tool
+      id: answer-source-1746804733438-target
+      source: answer
+      sourceHandle: source
+      target: '1746804733438'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: tool
+      id: 1746804733438-source-1746804820398-target
+      source: '1746804733438'
+      sourceHandle: source
+      target: '1746804820398'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: memobase_user_id
+          max_length: 50
+          options: []
+          required: true
+          type: text-input
+          variable: memobase_user_id
+      height: 89
+      id: '1746803580469'
+      position:
+        x: 30
+        y: 252
+      positionAbsolute:
+        x: 30
+        y: 252
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '<base_info>
+
+            {{#1746804325537.json#}}
+
+            </base_info>
+
+            {{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 10
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o
+          provider: langgenius/azure_openai/azure_openai
+        prompt_template:
+        - id: 72678669-602c-433b-b0d1-079dad6e6f97
+          role: system
+          text: 你是有用的助手
+        selected: false
+        title: LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 89
+      id: llm
+      position:
+        x: 638
+        y: 252
+      positionAbsolute:
+        x: 638
+        y: 252
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#llm.text#}}'
+        desc: ''
+        selected: false
+        title: 直接回复
+        type: answer
+        variables: []
+      height: 104
+      id: answer
+      position:
+        x: 942
+        y: 252
+      positionAbsolute:
+        x: 942
+        y: 252
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The ID of the user to retrieve context for
+            ja_JP: The ID of the user to retrieve context for
+            pt_BR: O ID do usuário para recuperar o contexto
+            zh_Hans: 要检索上下文的用户ID
+          label:
+            en_US: User ID
+            ja_JP: User ID
+            pt_BR: ID do Usuário
+            zh_Hans: 用户ID
+          llm_description: The ID of the user to retrieve context for.
+          max: null
+          min: null
+          name: user_id
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: 1000
+          form: llm
+          human_description:
+            en_US: 'The maximum number of tokens to return (default: 1000)'
+            ja_JP: 'The maximum number of tokens to return (default: 1000)'
+            pt_BR: 'O número máximo de tokens a serem retornados (padrão: 1000)'
+            zh_Hans: 要返回的最大Token大小（默认值：1000）
+          label:
+            en_US: Max token size of returned Context
+            ja_JP: Max token size of returned Context
+            pt_BR: Tamanho máximo do token do contexto retornado
+            zh_Hans: 返回上下文的最大Token大小
+          llm_description: The maximum number of tokens to return in the context.
+          max: null
+          min: null
+          name: max_token_size
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: number
+        params:
+          max_token_size: ''
+          user_id: ''
+        provider_id: acane0320/memobase/memobase
+        provider_name: acane0320/memobase/memobase
+        provider_type: builtin
+        selected: false
+        title: 获取用户上下文
+        tool_configurations: {}
+        tool_label: 获取用户上下文
+        tool_name: get_user_context
+        tool_parameters:
+          user_id:
+            type: mixed
+            value: '{{#1746803580469.memobase_user_id#}}'
+        type: tool
+      height: 53
+      id: '1746804325537'
+      position:
+        x: 334
+        y: 252
+      positionAbsolute:
+        x: 334
+        y: 252
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The ID of the user to insert data for
+            ja_JP: The ID of the user to insert data for
+            pt_BR: O ID do usuário para inserir dados
+            zh_Hans: 要为其插入数据的用户 ID
+          label:
+            en_US: User ID
+            ja_JP: User ID
+            pt_BR: ID do Usuário
+            zh_Hans: 用户 ID
+          llm_description: The ID of the user to insert data for.
+          max: null
+          min: null
+          name: user_id
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The message from the user in the conversation
+            ja_JP: The message from the user in the conversation
+            pt_BR: A mensagem do usuário na conversa
+            zh_Hans: 对话中用户的消息
+          label:
+            en_US: User Message
+            ja_JP: User Message
+            pt_BR: Mensagem do Usuário
+            zh_Hans: 用户消息
+          llm_description: The message content from the user in the conversation.
+          max: null
+          min: null
+          name: user_message
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The message from the assistant in the conversation
+            ja_JP: The message from the assistant in the conversation
+            pt_BR: A mensagem do assistente na conversa
+            zh_Hans: 对话中助手的消息
+          label:
+            en_US: Assistant Message
+            ja_JP: Assistant Message
+            pt_BR: Mensagem do Assistente
+            zh_Hans: 助手消息
+          llm_description: The message content from the assistant in the conversation.
+          max: null
+          min: null
+          name: assistant_message
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          assistant_message: ''
+          user_id: ''
+          user_message: ''
+        provider_id: acane0320/memobase/memobase
+        provider_name: acane0320/memobase/memobase
+        provider_type: builtin
+        selected: false
+        title: 插入数据
+        tool_configurations: {}
+        tool_label: 插入数据
+        tool_name: insert_data
+        tool_parameters:
+          assistant_message:
+            type: mixed
+            value: '{{#llm.text#}}'
+          user_id:
+            type: mixed
+            value: '{{#1746803580469.memobase_user_id#}}'
+          user_message:
+            type: mixed
+            value: '{{#sys.query#}}'
+        type: tool
+      height: 53
+      id: '1746804733438'
+      position:
+        x: 1246
+        y: 252
+      positionAbsolute:
+        x: 1246
+        y: 252
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_team_authorization: true
+        output_schema: null
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The ID of the user to flush memory for
+            ja_JP: The ID of the user to flush memory for
+            pt_BR: O ID do usuário para limpar a memória
+            zh_Hans: 要刷新记忆的用户 ID
+          label:
+            en_US: User ID
+            ja_JP: User ID
+            pt_BR: ID do Usuário
+            zh_Hans: 用户 ID
+          llm_description: The ID of the user to flush memory for.
+          max: null
+          min: null
+          name: user_id
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        params:
+          user_id: ''
+        provider_id: acane0320/memobase/memobase
+        provider_name: acane0320/memobase/memobase
+        provider_type: builtin
+        selected: false
+        title: 刷新记忆缓冲区
+        tool_configurations: {}
+        tool_label: 刷新记忆缓冲区
+        tool_name: flush_buffer
+        tool_parameters:
+          user_id:
+            type: mixed
+            value: '{{#1746803580469.memobase_user_id#}}'
+        type: tool
+      height: 53
+      id: '1746804820398'
+      position:
+        x: 1550
+        y: 252
+      positionAbsolute:
+        x: 1550
+        y: 252
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -1099.342568983058
+      y: 110.52353142237939
+      zoom: 0.9837575173343649
